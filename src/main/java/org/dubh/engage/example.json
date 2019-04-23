@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "host",
+      "type": "string",
+      "default": "localhost"
+    }
+  ]
+}
