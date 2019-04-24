@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "name",
+      "type": "string",
+      "default": "Brian Duff"
+    }
+  ]
+}

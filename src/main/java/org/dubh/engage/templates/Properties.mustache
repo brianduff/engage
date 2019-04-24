@@ -1,0 +1,23 @@
+// This is generated code. DO NOT EDIT.
+package {{{javaPackage}}};
+
+import org.dubh.engage.runtime.PropertyResolver;
+
+/** Provides access to properties for {{javaClassName}}. */
+public final class {{{javaClassName}}} {
+  private {{{javaClassName}}}() {}
+  {{#renderedProperties}}
+  {{#property.description}}
+
+  /**
+   * {{property.description}}
+   */
+  {{/property.description}}
+  public static {{{property.type.javaTypeName}}} get{{{javaMethodName}}}() {
+    return PropertyResolver.getDefaultInstance().get(
+        {{{property.type.javaTypeName}}}.class,
+        "{{{property.name}}}",
+        {{{javaDefaultValue}}});
+  }
+  {{/renderedProperties}}
+}

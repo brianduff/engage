@@ -19,6 +19,8 @@ maven_install(
     artifacts = [
         "org.json:json:20180813",
         "junit:junit:4.12",
+        "com.google.truth:truth:0.44",
+        "com.github.spullara.mustache.java:compiler:0.9.6",
     ],
     # Fetch srcjars. Defaults to False.
     fetch_sources = True,

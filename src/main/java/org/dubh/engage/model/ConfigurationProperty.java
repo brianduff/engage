@@ -25,6 +25,7 @@ public class ConfigurationProperty<T> {
     return defaultValue;
   }
 
+  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -36,5 +37,10 @@ public class ConfigurationProperty<T> {
     return Objects.equals(name, other.name)
         && Objects.equals(type, other.type)
         && Objects.equals(defaultValue, other.defaultValue);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, type, defaultValue);
   }
 }
