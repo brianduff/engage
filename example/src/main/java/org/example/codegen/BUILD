@@ -13,6 +13,6 @@ java_binary(
     main_class = "org.example.codegen.Main",
     deps = [
         ":GeneratedProperties",
-        "//src/main/java/org/dubh/engage/runtime",
+        "//runtime",
     ],
 )

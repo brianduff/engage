@@ -1,4 +1,4 @@
-package org.dubh.engage.runtime;
+package org.dubh.engage;
 
 /** Provides simplified access to properties. */
 public class Properties {

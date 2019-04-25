@@ -1,6 +1,6 @@
 package org.example.codegen;
 
-import org.dubh.engage.runtime.ConfigurationEngine;
+import org.dubh.engage.ConfigurationEngine;
 
 public class Main {
   public static void main(String[] args) {

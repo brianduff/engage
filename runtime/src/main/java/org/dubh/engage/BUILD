@@ -1,5 +1,5 @@
 java_library(
-    name = "runtime",
+    name = "engage",
     srcs = glob(["*.java"]),
     visibility = ["//visibility:public"],
 )

@@ -40,6 +40,6 @@ def engage_java_library(name, java_package=None, properties=None):
   native.java_library(
     name = name,
     srcs = [ ":" + name + ".java" ],
-    deps = ["//src/main/java/org/dubh/engage/runtime"]
+    deps = ["//runtime"]
   )
 

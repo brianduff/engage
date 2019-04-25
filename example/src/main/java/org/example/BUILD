@@ -3,5 +3,5 @@ java_binary(
     srcs = ["Main.java"],
     args = ["--name=brian"],
     main_class = "org.example.Main",
-    deps = ["//src/main/java/org/dubh/engage/runtime"],
+    deps = ["//runtime"],
 )

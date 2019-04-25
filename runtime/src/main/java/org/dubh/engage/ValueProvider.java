@@ -1,4 +1,4 @@
-package org.dubh.engage.runtime;
+package org.dubh.engage;
 
 /** Can provide the value of a property. */
 interface ValueProvider {
