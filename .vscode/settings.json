@@ -6,7 +6,10 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "bazel-**": true,
-    "**/target": true
+    "**/target": true,
+    "**/.settings/**": true,
+    "**/.classpath": true,
+    "**/.project": true
   },
   "java.configuration.updateBuildConfiguration": "automatic"
 }
