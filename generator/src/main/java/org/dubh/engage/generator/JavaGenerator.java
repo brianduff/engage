@@ -37,7 +37,7 @@ public class JavaGenerator {
 
     List<Map<String, Object>> renderedProperties = new ArrayList<>();
     mustacheModel.put("renderedProperties", renderedProperties);
-    for (ConfigurationProperty property : model.getFile().getProperties()) {
+    for (ConfigurationProperty<?> property : model.getFile().getProperties()) {
       renderedProperties.add(toRenderedProperty(property));
     }
 
@@ -49,7 +49,7 @@ public class JavaGenerator {
     return sw.toString();
   }
 
-  private static Map<String, Object> toRenderedProperty(ConfigurationProperty property) {
+  private static Map<String, Object> toRenderedProperty(ConfigurationProperty<?> property) {
     Map<String, Object> renderedProperty = new HashMap<>();
     renderedProperty.put("property", property);
     renderedProperty.put("javaMethodName", toJavaMethodName(property.getName()));
