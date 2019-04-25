@@ -22,6 +22,8 @@ final class StringMapProvider implements ValueProvider {
   private <T> T convert(Class<T> type, String value) {
     if (String.class.isAssignableFrom(type)) {
       return type.cast(value);
+    } else if (Integer.class.isAssignableFrom(type)) {
+      return type.cast(Integer.parseInt(value));
     }
     // TODO(bduff): other types
     return type.cast(value);

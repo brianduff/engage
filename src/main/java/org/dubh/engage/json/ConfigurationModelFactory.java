@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ConfigurationModelFactory {
+
   public ConfigurationModel fromJson(String jsonString) {
     JSONObject json = new JSONObject(jsonString);
     JSONArray jsonProperties = json.getJSONArray("properties");
@@ -18,16 +19,37 @@ public class ConfigurationModelFactory {
 
     for (int i = 0; i < jsonProperties.length(); i++) {
       String name = jsonProperties.getJSONObject(i).getString("name");
-      String type = jsonProperties.getJSONObject(i).getString("type");
-      if (!"string".equals(type)) {
-        throw new IllegalStateException();
-      }
-      String defaultValue = jsonProperties.getJSONObject(i).getString("default");
+      String jsonTypeName = jsonProperties.getJSONObject(i).getString("type");
 
-      properties.add(new ConfigurationProperty<String>(name, PropertyType.STRING, defaultValue));
+      Object defaultValue = jsonProperties.getJSONObject(i).get("default");
+
+      properties.add(createConfigurationProperty(name, jsonTypeName, defaultValue));
     }
 
     ConfigurationFile file = new ConfigurationFile(properties);
     return new ConfigurationModel(file);
+  }
+
+  private ConfigurationProperty<?> createConfigurationProperty(
+      String name, String jsonTypeName, Object defaultValue) {
+    PropertyType type = getPropertyType(jsonTypeName);
+
+    switch (type) {
+      case STRING:
+        return new ConfigurationProperty<String>(name, type, (String) defaultValue);
+      case INTEGER:
+        return new ConfigurationProperty<Integer>(name, type, (Integer) defaultValue);
+    }
+    throw new IllegalStateException("Unhandled type " + type);
+  }
+
+  private PropertyType getPropertyType(String jsonName) {
+    switch (jsonName) {
+      case "string":
+        return PropertyType.STRING;
+      case "int":
+        return PropertyType.INTEGER;
+    }
+    throw new IllegalArgumentException("Invalid property type " + jsonName);
   }
 }

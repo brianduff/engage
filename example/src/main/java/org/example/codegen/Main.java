@@ -7,5 +7,6 @@ public class Main {
     new ConfigurationEngine().withCommandlineFlags(args).initialize();
 
     System.out.printf("The value of the name flag is %s\n", GeneratedProperties.getName());
+    System.out.printf("The value of the age flag is %d\n", GeneratedProperties.getAge());
   }
 }

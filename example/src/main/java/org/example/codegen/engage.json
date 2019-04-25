@@ -4,6 +4,11 @@
       "name": "name",
       "type": "string",
       "default": "Brian Duff"
+    },
+    {
+      "name": "age",
+      "type": "int",
+      "default": 100
     }
   ]
 }
