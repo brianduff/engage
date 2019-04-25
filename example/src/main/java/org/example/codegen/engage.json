@@ -10,5 +10,11 @@
       "type": "int",
       "default": 100
     }
+    ,
+    {
+      "name": "alive",
+      "type": "boolean",
+      "default": false
+    }
   ]
 }

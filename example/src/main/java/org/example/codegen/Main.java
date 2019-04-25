@@ -8,5 +8,6 @@ public class Main {
 
     System.out.printf("The value of the name flag is %s\n", GeneratedProperties.getName());
     System.out.printf("The value of the age flag is %d\n", GeneratedProperties.getAge());
+    System.out.printf("The value of the alive flag is %s\n", GeneratedProperties.getAlive());
   }
 }

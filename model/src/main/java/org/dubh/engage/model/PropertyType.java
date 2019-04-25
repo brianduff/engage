@@ -1,6 +1,7 @@
 package org.dubh.engage.model;
 
 public enum PropertyType {
+  BOOLEAN("Boolean"),
   INTEGER("Integer"),
   STRING("String");
 

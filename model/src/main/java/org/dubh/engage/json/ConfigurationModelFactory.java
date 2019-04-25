@@ -39,6 +39,8 @@ public class ConfigurationModelFactory {
         return new ConfigurationProperty<String>(name, type, (String) defaultValue);
       case INTEGER:
         return new ConfigurationProperty<Integer>(name, type, (Integer) defaultValue);
+      case BOOLEAN:
+        return new ConfigurationProperty<Boolean>(name, type, (Boolean) defaultValue);
     }
     throw new IllegalStateException("Unhandled type " + type);
   }
@@ -49,6 +51,8 @@ public class ConfigurationModelFactory {
         return PropertyType.STRING;
       case "int":
         return PropertyType.INTEGER;
+      case "boolean":
+        return PropertyType.BOOLEAN;
     }
     throw new IllegalArgumentException("Invalid property type " + jsonName);
   }

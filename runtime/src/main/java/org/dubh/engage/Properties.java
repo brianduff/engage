@@ -19,4 +19,12 @@ public class Properties {
   public static Integer getInt(String name, Integer defaultValue) {
     return PropertyResolver.getDefaultInstance().get(Integer.class, name, defaultValue);
   }
+
+  public static Boolean getBoolean(String name) {
+    return getBoolean(name, null);
+  }
+
+  public static Boolean getBoolean(String name, Boolean defaultValue) {
+    return PropertyResolver.getDefaultInstance().get(Boolean.class, name, defaultValue);
+  }
 }
