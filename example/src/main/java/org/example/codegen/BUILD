@@ -1,4 +1,4 @@
-load("//:engage.bzl", "engage_java_library")
+load("//generator:engage.bzl", "engage_java_library")
 
 engage_java_library(
     name = "GeneratedProperties",

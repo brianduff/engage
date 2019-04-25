@@ -1,4 +1,4 @@
-package org.dubh.engage;
+package org.dubh.engage.generator;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -18,11 +18,11 @@ import org.dubh.engage.model.ConfigurationModel;
 import org.dubh.engage.model.ConfigurationProperty;
 
 /** Generates a .java file given an input json file. */
-public class Generator {
+public class JavaGenerator {
   private final String javaPackage;
   private final String javaClassName;
 
-  Generator(String javaPackage, String javaClassName) {
+  JavaGenerator(String javaPackage, String javaClassName) {
     this.javaPackage = javaPackage;
     this.javaClassName = javaClassName;
   }
@@ -42,7 +42,7 @@ public class Generator {
     }
 
     MustacheFactory mf = new DefaultMustacheFactory();
-    Mustache mustache = mf.compile("org/dubh/engage/templates/Properties.mustache");
+    Mustache mustache = mf.compile("org/dubh/engage/generator/template/Properties.mustache");
     StringWriter sw = new StringWriter();
     mustache.execute(sw, mustacheModel);
 
@@ -82,7 +82,7 @@ public class Generator {
     }
 
     String jsonString = new String(Files.readAllBytes(jsonFile), StandardCharsets.UTF_8);
-    Generator generator = new Generator(javaPackage, javaClassName);
+    JavaGenerator generator = new JavaGenerator(javaPackage, javaClassName);
     String javaString = generator.generate(jsonString);
     Files.write(outJavaFile, javaString.getBytes(StandardCharsets.UTF_8));
   }

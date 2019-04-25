@@ -23,7 +23,7 @@ engage_generate_java = rule(
       executable = True,
       cfg = "host",
       allow_files = True,
-      default = Label("//src/main/java/org/dubh/engage:Generator")
+      default = Label("//generator/src/main/java/org/dubh/engage/generator:JavaGenerator")
     )
   }
 )
