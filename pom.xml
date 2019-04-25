@@ -10,6 +10,8 @@
 
   <modules>
     <module>generator</module>
+    <module>model</module>
+    <module>runtime</module>
   </modules>
 
   <properties>
