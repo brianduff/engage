@@ -21,6 +21,8 @@ maven_install(
         "junit:junit:4.12",
         "com.google.truth:truth:0.44",
         "com.github.spullara.mustache.java:compiler:0.9.6",
+        "org.apache.maven:maven-plugin-api:3.0",
+        "org.apache.maven.plugin-tools:maven-plugin-annotations:3.4",
     ],
     # Fetch srcjars. Defaults to False.
     fetch_sources = True,

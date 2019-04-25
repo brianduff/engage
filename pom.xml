@@ -12,6 +12,7 @@
     <module>generator</module>
     <module>model</module>
     <module>runtime</module>
+    <module>generator-mojo</module>
   </modules>
 
   <properties>
