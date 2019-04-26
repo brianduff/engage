@@ -56,7 +56,11 @@ public class ConfigurationEngine {
         if (d.type != Boolean.class) {
           optionString += "=<" + getValueDescriptionForHelp(d.type) + ">";
         }
-        out.printf("  %s\t%s\n", optionString, d.description);
+        String defaultString = "";
+        if (d.defaultValue != null) {
+          defaultString = " [default: " + d.defaultValue + "]";
+        }
+        out.printf("  %s\t%s%s\n", optionString, d.description, defaultString);
       }
     }
   }
