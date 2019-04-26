@@ -23,18 +23,14 @@ public class ConfigurationModelFactory {
       String jsonTypeName = jsonProperty.getString("type");
       Object defaultValue = jsonProperty.opt("default");
       String description = jsonProperty.optString("description", null);
+      boolean required = jsonProperty.optBoolean("required");
 
-      properties.add(createConfigurationProperty(name, jsonTypeName, defaultValue, description));
+      PropertyType type = getPropertyType(jsonTypeName);
+      properties.add(new ConfigurationProperty(name, type, defaultValue, description, required));
     }
 
     ConfigurationFile file = new ConfigurationFile(properties);
     return new ConfigurationModel(file);
-  }
-
-  private ConfigurationProperty createConfigurationProperty(
-      String name, String jsonTypeName, Object defaultValue, String description) {
-    PropertyType type = getPropertyType(jsonTypeName);
-    return new ConfigurationProperty(name, type, defaultValue, description);
   }
 
   private PropertyType getPropertyType(String jsonName) {

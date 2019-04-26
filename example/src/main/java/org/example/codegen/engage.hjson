@@ -4,11 +4,12 @@
       name: "name"
       description: "The name of the person running this program"
       type: "string"
-      default: "Brian Duff"
+      required: true
     }
     {
       name: "age"
       type: "int"
+      required: true
       default: 100
     }
     {

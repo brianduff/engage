@@ -14,7 +14,7 @@ public final class {{{javaClassName}}} implements GeneratedProperties {
 
   private final PropertyDescriptor[] descriptors = new PropertyDescriptor[] {
     {{#renderedProperties}}
-    new PropertyDescriptor({{{property.type.javaTypeName}}}.class, "{{{property.name}}}", "{{{property.description}}}", {{{javaDefaultValue}}}),
+    new PropertyDescriptor({{{property.type.javaTypeName}}}.class, "{{{property.name}}}", "{{{property.description}}}", {{{javaDefaultValue}}}, {{{property.required}}}),
     {{/renderedProperties}}
   };
 

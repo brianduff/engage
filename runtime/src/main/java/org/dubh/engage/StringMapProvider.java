@@ -19,6 +19,11 @@ final class StringMapProvider implements ValueProvider {
     return convert(type, values.get(name));
   }
 
+  @Override
+  public boolean hasValue(String name) {
+    return values.containsKey(name);
+  }
+
   @SuppressWarnings("unchecked") // primitive type unboxing casts
   private <T> T convert(Class<T> type, String value) {
     if (value == null) {

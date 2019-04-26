@@ -7,13 +7,15 @@ public class ConfigurationProperty {
   private final PropertyType type;
   private final Object defaultValue;
   private final String description;
+  private final boolean required;
 
   public ConfigurationProperty(
-      String name, PropertyType type, Object defaultValue, String description) {
+      String name, PropertyType type, Object defaultValue, String description, boolean required) {
     this.name = name;
     this.type = type;
     this.defaultValue = defaultValue;
     this.description = description;
+    this.required = required;
   }
 
   public String getName() {
@@ -30,6 +32,10 @@ public class ConfigurationProperty {
 
   public String getDescription() {
     return description;
+  }
+
+  public boolean isRequired() {
+    return required;
   }
 
   @Override

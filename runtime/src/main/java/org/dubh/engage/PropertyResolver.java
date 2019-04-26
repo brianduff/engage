@@ -23,6 +23,15 @@ public class PropertyResolver {
     return defaultValue;
   }
 
+  public boolean has(String name) {
+    for (ValueProvider provider : valueProviders) {
+      if (provider.hasValue(name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static PropertyResolver getDefaultInstance() {
     if (defaultInstance == null) {
       throw new IllegalStateException("PropertyResolver not yet initialized");

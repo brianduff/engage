@@ -2,7 +2,9 @@ package org.dubh.engage;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /** Used to initialize the configuration engine. */
 public class ConfigurationEngine {
@@ -45,22 +47,56 @@ public class ConfigurationEngine {
       return false;
     }
 
+    // Check if there are any unsatisfied required properties.
+    Set<PropertyDescriptor> missing = getMissingRequiredProperties();
+    if (!missing.isEmpty()) {
+      for (PropertyDescriptor p : missing) {
+        System.err.println("Missing required option: " + toOptionString(p));
+      }
+      System.err.println();
+      printUsage(System.err);
+      return false;
+    }
+
     return true;
+  }
+
+  private Set<PropertyDescriptor> getMissingRequiredProperties() {
+    Set<PropertyDescriptor> missing = new HashSet<>();
+    for (GeneratedProperties p : generatedProperties) {
+      for (PropertyDescriptor d : p.getPropertyDescriptors()) {
+        if (d.required) {
+          if (!PropertyResolver.getDefaultInstance().has(d.name) && d.defaultValue == null) {
+            missing.add(d);
+          }
+        }
+      }
+    }
+    return missing;
+  }
+
+  private String toOptionString(PropertyDescriptor p) {
+    String optionString = "--" + p.name;
+    if (p.type != Boolean.class) {
+      optionString += "=<" + getValueDescriptionForHelp(p.type) + ">";
+    }
+    return optionString;
   }
 
   private void printUsage(PrintStream out) {
     out.println("Options:");
     for (GeneratedProperties p : generatedProperties) {
       for (PropertyDescriptor d : p.getPropertyDescriptors()) {
-        String optionString = "--" + d.name;
-        if (d.type != Boolean.class) {
-          optionString += "=<" + getValueDescriptionForHelp(d.type) + ">";
-        }
+        String optionString = toOptionString(d);
         String defaultString = "";
         if (d.defaultValue != null) {
           defaultString = " [default: " + d.defaultValue + "]";
         }
-        out.printf("  %s\t%s%s\n", optionString, d.description, defaultString);
+        String descriptionString = d.name;
+        if (d.description != null && d.description.length() > 0) {
+          descriptionString = d.description;
+        }
+        out.printf("  %s\t%s%s\n", optionString, descriptionString, defaultString);
       }
     }
   }

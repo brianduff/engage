@@ -9,7 +9,6 @@ engage_java_library(
 java_binary(
     name = "Main",
     srcs = glob(["*.java"]),
-    args = ["--name=brian"],
     main_class = "org.example.codegen.Main",
     deps = [
         ":ExampleProperties",
