@@ -1,23 +1,44 @@
 // This is generated code. DO NOT EDIT.
 package {{{javaPackage}}};
 
+import org.dubh.engage.GeneratedProperties;
+import org.dubh.engage.PropertyDescriptor;
 import org.dubh.engage.PropertyResolver;
 
 /** Provides access to properties for {{javaClassName}}. */
-public final class {{{javaClassName}}} {
-  private {{{javaClassName}}}() {}
-  {{#renderedProperties}}
-  {{#property.description}}
+public final class {{{javaClassName}}} implements GeneratedProperties {
+  /** Get the single instance of this properties object. */
+  public static {{{javaClassName}}} get() {
+    return Loader.INSTANCE;
+  }
 
+  private final PropertyDescriptor[] descriptors = new PropertyDescriptor[] {
+    {{#renderedProperties}}
+    new PropertyDescriptor({{{property.type.javaTypeName}}}.class, "{{{property.name}}}", "{{{property.description}}}", {{{javaDefaultValue}}}),
+    {{/renderedProperties}}
+  };
+
+  @Override
+  public PropertyDescriptor[] getPropertyDescriptors() {
+    return descriptors;
+  }
+
+  {{#renderedProperties}}
+
+  {{#property.description}}
   /**
    * {{property.description}}
    */
   {{/property.description}}
-  public static {{{property.type.javaTypeName}}} get{{{javaMethodName}}}() {
+  public {{{property.type.javaTypeName}}} get{{{javaMethodName}}}() {
     return PropertyResolver.getDefaultInstance().get(
         {{{property.type.javaTypeName}}}.class,
         "{{{property.name}}}",
         {{{javaDefaultValue}}});
   }
   {{/renderedProperties}}
+
+  private static final class Loader {
+    private static final {{{javaClassName}}} INSTANCE = new {{{javaClassName}}}();
+  }
 }
