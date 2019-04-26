@@ -7,6 +7,7 @@ java_library(
         "//model",
         "//runtime",
         "@maven//:com_github_spullara_mustache_java_compiler",
+        "@maven//:org_hjson_hjson",
     ],
 )
 

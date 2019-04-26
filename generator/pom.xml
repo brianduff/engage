@@ -26,5 +26,10 @@
       <artifactId>compiler</artifactId>
       <version>0.9.6</version>
     </dependency>
+    <dependency>
+      <groupId>org.hjson</groupId>
+      <artifactId>hjson</artifactId>
+      <version>3.0.0</version>
+    </dependency>
   </dependencies>
 </project>

@@ -23,6 +23,7 @@ maven_install(
         "com.github.spullara.mustache.java:compiler:0.9.6",
         "org.apache.maven:maven-plugin-api:3.0",
         "org.apache.maven.plugin-tools:maven-plugin-annotations:3.4",
+        "org.hjson:hjson:3.0.0",
     ],
     # Fetch srcjars. Defaults to False.
     fetch_sources = True,

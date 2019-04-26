@@ -1,0 +1,20 @@
+{
+  properties: [
+    {
+      name: "name"
+      description: "The name of the person running this program"
+      type: "string"
+      default: "Brian Duff"
+    }
+    {
+      name: "age"
+      type: "int"
+      default: 100
+    }
+    {
+      name: "alive"
+      type: "boolean"
+      default: false
+    }
+  ]
+}

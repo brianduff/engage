@@ -3,7 +3,7 @@ load("//generator:engage.bzl", "engage_java_library")
 engage_java_library(
     name = "GeneratedProperties",
     java_package = "org.example.codegen",
-    properties = ":engage.json",
+    properties = ":engage.hjson",
 )
 
 java_binary(

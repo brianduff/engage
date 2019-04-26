@@ -19,6 +19,7 @@ import org.dubh.engage.annotations.Property;
 import org.dubh.engage.json.ConfigurationModelFactory;
 import org.dubh.engage.model.ConfigurationModel;
 import org.dubh.engage.model.ConfigurationProperty;
+import org.hjson.JsonValue;
 
 /** Generates a .java file given an input json file. */
 public class JavaGenerator {
@@ -77,7 +78,7 @@ public class JavaGenerator {
   public static void main(String[] args) throws Exception {
     new ConfigurationEngine().withCommandlineArgs(args).initialize();
     Params params = PropertyInjector.getInstance().inject(new Params());
-    Path jsonFile = Paths.get(params.configFile);
+    Path configFile = Paths.get(params.configFile);
     Path outJavaFile = Paths.get(params.outFile);
 
     String javaClassName = outJavaFile.getFileName().toString();
@@ -85,10 +86,18 @@ public class JavaGenerator {
       javaClassName = javaClassName.substring(0, javaClassName.length() - ".java".length());
     }
 
-    String jsonString = new String(Files.readAllBytes(jsonFile), StandardCharsets.UTF_8);
+    String jsonString = readJson(configFile);
     JavaGenerator generator = new JavaGenerator(params.javaPackage, javaClassName);
     String javaString = generator.generate(jsonString);
     Files.write(outJavaFile, javaString.getBytes(StandardCharsets.UTF_8));
+  }
+
+  private static String readJson(Path configFile) throws IOException {
+    String fileContents = new String(Files.readAllBytes(configFile), StandardCharsets.UTF_8);
+    if (configFile.getFileName().toString().endsWith(".hjson")) {
+      return JsonValue.readHjson(fileContents).toString();
+    }
+    return fileContents;
   }
 
   private static class Params {
