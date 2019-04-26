@@ -21,7 +21,7 @@ public class ConfigurationModelFactory {
       JSONObject jsonProperty = jsonProperties.getJSONObject(i);
       String name = jsonProperty.getString("name");
       String jsonTypeName = jsonProperty.getString("type");
-      Object defaultValue = jsonProperty.get("default");
+      Object defaultValue = jsonProperty.opt("default");
       String description = jsonProperty.optString("description", null);
 
       properties.add(createConfigurationProperty(name, jsonTypeName, defaultValue, description));
