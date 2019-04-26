@@ -7,7 +7,7 @@ import java.util.List;
 public class ConfigurationEngine {
   private List<ValueProvider> providers = new ArrayList<>();
 
-  public ConfigurationEngine withCommandlineFlags(String[] flags) {
+  public ConfigurationEngine withCommandlineArgs(String[] flags) {
     providers.add(new StringMapProvider(new CommandlineFlagParser().parse(flags)));
     return this;
   }

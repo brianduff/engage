@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.dubh.engage.ConfigurationEngine;
+import org.dubh.engage.PropertyInjector;
+import org.dubh.engage.annotations.Property;
 import org.dubh.engage.json.ConfigurationModelFactory;
 import org.dubh.engage.model.ConfigurationModel;
 import org.dubh.engage.model.ConfigurationProperty;
@@ -37,7 +40,7 @@ public class JavaGenerator {
 
     List<Map<String, Object>> renderedProperties = new ArrayList<>();
     mustacheModel.put("renderedProperties", renderedProperties);
-    for (ConfigurationProperty<?> property : model.getFile().getProperties()) {
+    for (ConfigurationProperty property : model.getFile().getProperties()) {
       renderedProperties.add(toRenderedProperty(property));
     }
 
@@ -49,7 +52,7 @@ public class JavaGenerator {
     return sw.toString();
   }
 
-  private static Map<String, Object> toRenderedProperty(ConfigurationProperty<?> property) {
+  private static Map<String, Object> toRenderedProperty(ConfigurationProperty property) {
     Map<String, Object> renderedProperty = new HashMap<>();
     renderedProperty.put("property", property);
     renderedProperty.put("javaMethodName", toJavaMethodName(property.getName()));
@@ -72,18 +75,25 @@ public class JavaGenerator {
   }
 
   public static void main(String[] args) throws Exception {
-    Path jsonFile = Paths.get(args[0]);
-    Path outJavaFile = Paths.get(args[1]);
+    new ConfigurationEngine().withCommandlineArgs(args).initialize();
+    Params params = PropertyInjector.getInstance().inject(new Params());
+    Path jsonFile = Paths.get(params.configFile);
+    Path outJavaFile = Paths.get(params.outFile);
 
-    String javaPackage = args[2];
     String javaClassName = outJavaFile.getFileName().toString();
     if (javaClassName.endsWith(".java")) {
       javaClassName = javaClassName.substring(0, javaClassName.length() - ".java".length());
     }
 
     String jsonString = new String(Files.readAllBytes(jsonFile), StandardCharsets.UTF_8);
-    JavaGenerator generator = new JavaGenerator(javaPackage, javaClassName);
+    JavaGenerator generator = new JavaGenerator(params.javaPackage, javaClassName);
     String javaString = generator.generate(jsonString);
     Files.write(outJavaFile, javaString.getBytes(StandardCharsets.UTF_8));
+  }
+
+  private static class Params {
+    @Property private String configFile;
+    @Property private String outFile;
+    @Property private String javaPackage;
   }
 }

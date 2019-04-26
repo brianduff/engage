@@ -5,6 +5,7 @@ java_library(
     visibility = ["//visibility:public"],
     deps = [
         "//model",
+        "//runtime",
         "@maven//:com_github_spullara_mustache_java_compiler",
     ],
 )

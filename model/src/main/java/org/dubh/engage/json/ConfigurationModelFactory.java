@@ -15,34 +15,26 @@ public class ConfigurationModelFactory {
     JSONObject json = new JSONObject(jsonString);
     JSONArray jsonProperties = json.getJSONArray("properties");
 
-    List<ConfigurationProperty<?>> properties = new ArrayList<>();
+    List<ConfigurationProperty> properties = new ArrayList<>();
 
     for (int i = 0; i < jsonProperties.length(); i++) {
-      String name = jsonProperties.getJSONObject(i).getString("name");
-      String jsonTypeName = jsonProperties.getJSONObject(i).getString("type");
+      JSONObject jsonProperty = jsonProperties.getJSONObject(i);
+      String name = jsonProperty.getString("name");
+      String jsonTypeName = jsonProperty.getString("type");
+      Object defaultValue = jsonProperty.get("default");
+      String description = jsonProperty.optString("description", null);
 
-      Object defaultValue = jsonProperties.getJSONObject(i).get("default");
-
-      properties.add(createConfigurationProperty(name, jsonTypeName, defaultValue));
+      properties.add(createConfigurationProperty(name, jsonTypeName, defaultValue, description));
     }
 
     ConfigurationFile file = new ConfigurationFile(properties);
     return new ConfigurationModel(file);
   }
 
-  private ConfigurationProperty<?> createConfigurationProperty(
-      String name, String jsonTypeName, Object defaultValue) {
+  private ConfigurationProperty createConfigurationProperty(
+      String name, String jsonTypeName, Object defaultValue, String description) {
     PropertyType type = getPropertyType(jsonTypeName);
-
-    switch (type) {
-      case STRING:
-        return new ConfigurationProperty<String>(name, type, (String) defaultValue);
-      case INTEGER:
-        return new ConfigurationProperty<Integer>(name, type, (Integer) defaultValue);
-      case BOOLEAN:
-        return new ConfigurationProperty<Boolean>(name, type, (Boolean) defaultValue);
-    }
-    throw new IllegalStateException("Unhandled type " + type);
+    return new ConfigurationProperty(name, type, defaultValue, description);
   }
 
   private PropertyType getPropertyType(String jsonName) {

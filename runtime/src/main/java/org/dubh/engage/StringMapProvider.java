@@ -19,6 +19,7 @@ final class StringMapProvider implements ValueProvider {
     return convert(type, values.get(name));
   }
 
+  @SuppressWarnings("unchecked") // primitive type unboxing casts
   private <T> T convert(Class<T> type, String value) {
     if (value == null) {
       return null;
@@ -29,6 +30,8 @@ final class StringMapProvider implements ValueProvider {
       return type.cast(Integer.parseInt(value));
     } else if (Boolean.class.isAssignableFrom(type)) {
       return type.cast(Boolean.valueOf(value));
+    } else if (int.class.isAssignableFrom(type)) {
+      return (T) Integer.valueOf(Integer.parseInt(value));
     }
     // TODO(bduff): other types
     return type.cast(value);

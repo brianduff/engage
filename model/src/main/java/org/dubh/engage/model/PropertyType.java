@@ -1,17 +1,21 @@
 package org.dubh.engage.model;
 
 public enum PropertyType {
-  BOOLEAN("Boolean"),
-  INTEGER("Integer"),
-  STRING("String");
+  BOOLEAN(Boolean.class),
+  INTEGER(Integer.class),
+  STRING(String.class);
 
-  private final String javaTypeName;
+  private final Class<?> javaType;
 
-  PropertyType(String javaTypeName) {
-    this.javaTypeName = javaTypeName;
+  PropertyType(Class<?> javaType) {
+    this.javaType = javaType;
+  }
+
+  public Class<?> getJavaType() {
+    return javaType;
   }
 
   public String getJavaTypeName() {
-    return javaTypeName;
+    return javaType.getSimpleName();
   }
 }

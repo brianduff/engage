@@ -1,5 +1,8 @@
 java_library(
     name = "runtime",
     visibility = ["//visibility:public"],
-    exports = ["//runtime/src/main/java/org/dubh/engage"],
+    exports = [
+        "//runtime/src/main/java/org/dubh/engage",
+        "//runtime/src/main/java/org/dubh/engage/annotations",
+    ],
 )

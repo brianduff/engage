@@ -1,7 +1,10 @@
 def _impl(ctx):
   args = ctx.actions.args()
+  args.add("--configFile")
   args.add_all(ctx.files.properties)
+  args.add("--outFile")
   args.add(ctx.outputs.out)
+  args.add("--javaPackage")
   args.add(ctx.attr.java_package)
 
   ctx.actions.run(

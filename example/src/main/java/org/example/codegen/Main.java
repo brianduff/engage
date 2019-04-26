@@ -4,7 +4,7 @@ import org.dubh.engage.ConfigurationEngine;
 
 public class Main {
   public static void main(String[] args) {
-    new ConfigurationEngine().withCommandlineFlags(args).initialize();
+    new ConfigurationEngine().withCommandlineArgs(args).initialize();
 
     System.out.printf("The value of the name flag is %s\n", GeneratedProperties.getName());
     System.out.printf("The value of the age flag is %d\n", GeneratedProperties.getAge());
