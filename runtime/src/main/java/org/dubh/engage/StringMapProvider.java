@@ -1,5 +1,6 @@
 package org.dubh.engage;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -37,8 +38,17 @@ final class StringMapProvider implements ValueProvider {
       return type.cast(Boolean.valueOf(value));
     } else if (int.class.isAssignableFrom(type)) {
       return (T) Integer.valueOf(Integer.parseInt(value));
+    } else if (Enum.class.isAssignableFrom(type)) {
+      return type.cast(valueOf(type, value));
     }
     // TODO(bduff): other types
     return type.cast(value);
+  }
+
+  private static Object valueOf(Class<?> enumType, String value) {
+    return Arrays.stream(enumType.getEnumConstants())
+        .filter(e -> e.toString().equals(value))
+        .findFirst()
+        .orElse(null);
   }
 }

@@ -17,8 +17,10 @@ import org.dubh.engage.ConfigurationEngine;
 import org.dubh.engage.PropertyInjector;
 import org.dubh.engage.annotations.Property;
 import org.dubh.engage.json.ConfigurationModelFactory;
+import org.dubh.engage.model.ConfigurationEnum;
 import org.dubh.engage.model.ConfigurationModel;
 import org.dubh.engage.model.ConfigurationProperty;
+import org.dubh.engage.model.PropertyType;
 import org.hjson.JsonValue;
 
 /** Generates a .java file given an input json file. */
@@ -45,6 +47,13 @@ public class JavaGenerator {
       renderedProperties.add(toRenderedProperty(property));
     }
 
+    List<Map<String, Object>> renderedEnums = new ArrayList<>();
+    for (ConfigurationEnum e : model.getFile().getEnums()) {
+      renderedEnums.add(toRenderedEnum(e));
+    }
+
+    mustacheModel.put("enumTypes", renderedEnums);
+
     MustacheFactory mf = new DefaultMustacheFactory();
     Mustache mustache = mf.compile("org/dubh/engage/generator/template/Properties.mustache");
     StringWriter sw = new StringWriter();
@@ -53,12 +62,34 @@ public class JavaGenerator {
     return sw.toString();
   }
 
+  private static Map<String, Object> toRenderedEnum(ConfigurationEnum e) {
+    Map<String, Object> renderedEnum = new HashMap<>();
+    renderedEnum.put("enum", e);
+    renderedEnum.put("javaType", toJavaName(e.getName()));
+
+    return renderedEnum;
+  }
+
   private static Map<String, Object> toRenderedProperty(ConfigurationProperty property) {
     Map<String, Object> renderedProperty = new HashMap<>();
     renderedProperty.put("property", property);
     renderedProperty.put("javaMethodName", toJavaMethodName(property.getName()));
     renderedProperty.put("javaDefaultValue", toJavaDefaultValue(property.getDefaultValue()));
+    renderedProperty.put("javaTypeName", toJavaTypeName(property));
     return renderedProperty;
+  }
+
+  private static String toJavaTypeName(ConfigurationProperty property) {
+    // Special handling for enums.
+    if (property.getType() == PropertyType.ENUM) {
+      return toJavaName(property.getName());
+    }
+
+    return property.getType().getJavaTypeName();
+  }
+
+  private static String toJavaName(String enumName) {
+    return Character.toUpperCase(enumName.charAt(0)) + enumName.substring(1);
   }
 
   private static String toJavaMethodName(String propertyName) {

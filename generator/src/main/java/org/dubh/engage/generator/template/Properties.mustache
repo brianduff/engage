@@ -14,7 +14,7 @@ public final class {{{javaClassName}}} implements GeneratedProperties {
 
   private final PropertyDescriptor[] descriptors = new PropertyDescriptor[] {
     {{#renderedProperties}}
-    new PropertyDescriptor({{{property.type.javaTypeName}}}.class, "{{{property.name}}}", "{{{property.description}}}", {{{javaDefaultValue}}}, {{{property.required}}}),
+    new PropertyDescriptor({{{javaTypeName}}}.class, "{{{property.name}}}", "{{{property.description}}}", {{{javaDefaultValue}}}, {{{property.required}}}),
     {{/renderedProperties}}
   };
 
@@ -30,9 +30,9 @@ public final class {{{javaClassName}}} implements GeneratedProperties {
    * {{property.description}}
    */
   {{/property.description}}
-  public {{{property.type.javaTypeName}}} get{{{javaMethodName}}}() {
+  public {{{javaTypeName}}} get{{{javaMethodName}}}() {
     return PropertyResolver.getDefaultInstance().get(
-        {{{property.type.javaTypeName}}}.class,
+        {{{javaTypeName}}}.class,
         "{{{property.name}}}",
         {{{javaDefaultValue}}});
   }
@@ -41,4 +41,13 @@ public final class {{{javaClassName}}} implements GeneratedProperties {
   private static final class Loader {
     private static final {{{javaClassName}}} INSTANCE = new {{{javaClassName}}}();
   }
+
+  {{#enumTypes}}
+  /** Enum for {{{javaType}}} */
+  public enum {{{javaType}}} {
+    {{#enum.values}}
+      {{{.}}},
+    {{/enum.values}};
+  }
+  {{/enumTypes}}
 }

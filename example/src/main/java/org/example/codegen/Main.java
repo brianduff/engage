@@ -16,5 +16,6 @@ public class Main {
     System.out.printf("The value of the name flag is %s\n", ExampleProperties.get().getName());
     System.out.printf("The value of the age flag is %d\n", ExampleProperties.get().getAge());
     System.out.printf("The value of the alive flag is %s\n", ExampleProperties.get().getAlive());
+    System.out.printf("The value of the size flag is %s\n", ExampleProperties.get().getSize());
   }
 }

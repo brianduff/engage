@@ -17,5 +17,10 @@
       type: "boolean"
       default: false
     }
+    {
+      name: "size"
+      type: "enum"
+      allowed_values: [ "xs", "s", "m", "l" ]
+    }
   ]
 }

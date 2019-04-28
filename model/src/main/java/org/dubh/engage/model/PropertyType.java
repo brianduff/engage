@@ -3,7 +3,8 @@ package org.dubh.engage.model;
 public enum PropertyType {
   BOOLEAN(Boolean.class),
   INTEGER(Integer.class),
-  STRING(String.class);
+  STRING(String.class),
+  ENUM(Enum.class);
 
   private final Class<?> javaType;
 

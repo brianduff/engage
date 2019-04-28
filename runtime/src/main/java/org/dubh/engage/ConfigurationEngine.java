@@ -47,6 +47,8 @@ public class ConfigurationEngine {
       return false;
     }
 
+    boolean hasErrors = false;
+
     // Check if there are any unsatisfied required properties.
     Set<PropertyDescriptor> missing = getMissingRequiredProperties();
     if (!missing.isEmpty()) {
@@ -54,6 +56,32 @@ public class ConfigurationEngine {
         System.err.println("Missing required option: " + toOptionString(p));
       }
       System.err.println();
+      hasErrors = true;
+    }
+
+    // Check if there are any enum types with invalid values.
+    for (GeneratedProperties p : generatedProperties) {
+      for (PropertyDescriptor d : p.getPropertyDescriptors()) {
+        if (Enum.class.isAssignableFrom(d.type)) {
+          String value =
+              PropertyResolver.getDefaultInstance()
+                  .get(String.class, d.name, (String) d.defaultValue);
+          // It's ok for it to be null.
+          if (value == null) {
+            continue;
+          }
+          List<String> validEnumValues = getEnumValues(d.type);
+          if (!validEnumValues.contains(value)) {
+            System.err.printf(
+                "Invalid value '%s' for option: %s. Must be: <%s>\n",
+                value, d.name, getValueDescriptionForHelp(d));
+            hasErrors = true;
+          }
+        }
+      }
+    }
+
+    if (hasErrors) {
       printUsage(System.err);
       return false;
     }
@@ -78,7 +106,7 @@ public class ConfigurationEngine {
   private String toOptionString(PropertyDescriptor p) {
     String optionString = "--" + p.name;
     if (p.type != Boolean.class) {
-      optionString += "=<" + getValueDescriptionForHelp(p.type) + ">";
+      optionString += "=<" + getValueDescriptionForHelp(p) + ">";
     }
     return optionString;
   }
@@ -101,12 +129,23 @@ public class ConfigurationEngine {
     }
   }
 
-  private String getValueDescriptionForHelp(Class<?> optionType) {
-    if (optionType == String.class) {
+  private String getValueDescriptionForHelp(PropertyDescriptor p) {
+    if (p.type == String.class) {
       return "str";
-    } else if (optionType == Integer.class) {
+    } else if (p.type == Integer.class) {
       return "int";
+    } else if (Enum.class.isAssignableFrom(p.type)) {
+      return String.join("|", getEnumValues(p.type));
     }
     return "val";
+  }
+
+  private List<String> getEnumValues(Class<?> enumClass) {
+    Object[] values = enumClass.getEnumConstants();
+    List<String> stringValues = new ArrayList<>();
+    for (Object o : values) {
+      stringValues.add(o.toString());
+    }
+    return stringValues;
   }
 }
