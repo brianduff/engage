@@ -20,44 +20,48 @@ public class CommandlineFlagParserTest {
 
   @Test
   public void parse_withSingleArgBooleanFlag_populatesMap() {
-    assertThat(parser.parse("--enableWidgets")).containsEntry("enableWidgets", "true");
+    assertThat(parser.parse("--enableWidgets").formalArgs).containsEntry("enableWidgets", "true");
   }
 
   @Test
   public void parse_withBooleanFlag_populatesMap() {
-    assertThat(parser.parse("--enableWidgets", "true")).containsEntry("enableWidgets", "true");
+    assertThat(parser.parse("--enableWidgets", "true").formalArgs).containsEntry("enableWidgets", "true");
   }
 
   @Test
   public void parse_withBooleanFlagAndValueFlag_populatesMap() {
-    assertThat(parser.parse("--enableWidgets", "--random", "bar"))
+    assertThat(parser.parse("--enableWidgets", "--random", "bar").formalArgs)
         .containsExactly("enableWidgets", "true", "random", "bar");
   }
 
   @Test
   public void parse_withStringFlagValue_populatesMap() {
-    assertThat(parser.parse("--host", "localhost")).containsEntry("host", "localhost");
+    assertThat(parser.parse("--host", "localhost").formalArgs).containsEntry("host", "localhost");
   }
 
   @Test
   public void parse_withEquals_populatesMap() {
-    assertThat(parser.parse("--host=localhost")).containsEntry("host", "localhost");
+    assertThat(parser.parse("--host=localhost").formalArgs).containsEntry("host", "localhost");
   }
 
   @Test
   public void parse_withMissingAtArg_populatesMap() {
-    assertThat(parser.parse("--host=localhost", "@missingfile.txt")).containsEntry("host", "localhost");
+    assertThat(parser.parse("--host=localhost", "@missingfile.txt").formalArgs).containsEntry("host", "localhost");
   }
 
   @Test
   public void parse_withAtArg_populatesMap() throws Exception {
-    String path = writeTempFile("--someKey somevalue --someOtherKey \"value with   whitespace\"\n--anotherValue=true\n--trailing=\"well, well");
-    Map<String, String> args = parser.parse("@" + path, "--simpleArg");
+    String path = writeTempFile("hello --someKey somevalue world --someOtherKey \"value with   whitespace\"\n--anotherValue=true\n--trailing=\"well, well");
+    CommandlineFlagParser.ParsedResults results = parser.parse("@" + path, "--simpleArg");
+    Map<String, String> args = results.formalArgs;
     assertThat(args).containsEntry("someKey", "somevalue");
     assertThat(args).containsEntry("someOtherKey", "value with   whitespace");
     assertThat(args).containsEntry("anotherValue", "true");
     assertThat(args).containsEntry("simpleArg", "true");
     assertThat(args).containsEntry("trailing", "well, well");
+
+    assertThat(results.remainingArgs).contains("hello");
+    assertThat(results.remainingArgs).contains("world");
   }
 
   private String writeTempFile(String contents) throws IOException {

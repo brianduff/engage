@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 
 /** Used to initialize the configuration engine. */
 public class ConfigurationEngine {
   private final List<ValueProvider> providers = new ArrayList<>();
   private final List<GeneratedProperties> generatedProperties = new ArrayList<>();
+  private List<String> remainingArgs = Collections.emptyList();
 
   /** Adds the specified command line arguments to this engine. */
   public ConfigurationEngine withCommandlineArgs(String[] flags) {
-    providers.add(new StringMapProvider(new CommandlineFlagParser().parse(flags)));
+    CommandlineFlagParser.ParsedResults results = new CommandlineFlagParser().parse(flags);
+    remainingArgs = Collections.unmodifiableList(results.remainingArgs);
+    providers.add(new StringMapProvider(results.formalArgs));
     return this;
   }
 
@@ -87,6 +91,13 @@ public class ConfigurationEngine {
     }
 
     return true;
+  }
+
+  /**
+   * Returns the set of non-formal args (i.e. args not starting with --).
+   */
+  public List<String> getUnprocessedArgs() {
+    return remainingArgs;
   }
 
   private Set<PropertyDescriptor> getMissingRequiredProperties() {

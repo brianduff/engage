@@ -19,10 +19,11 @@ class CommandlineFlagParser {
   private static final Logger LOGGER = Logger.getLogger(CommandlineFlagParser.class.getName());
 
   /** Processes the given set of commandline flags. */
-  Map<String, String> parse(String... args) {
+  ParsedResults parse(String... args) {
     Deque<String> argQueue = new ArrayDeque<>(Arrays.asList(args));
 
     Map<String, String> map = new HashMap<>();
+    List<String> remainingArgs = new ArrayList<>();
     String currentArgName = null;
     while (!argQueue.isEmpty()) {
       String arg = argQueue.poll();
@@ -59,12 +60,12 @@ class CommandlineFlagParser {
         currentArgName = null;
         continue;
       }
-      // TODO(bduff): store an unconsumed cmdline arg.
+      remainingArgs.add(arg);
     }
     if (currentArgName != null) {
       map.put(currentArgName, "true");
     }
-    return map;
+    return new ParsedResults(map, remainingArgs);
   }
 
   private static List<String> readArgsFromFile(String filename) {
@@ -114,7 +115,16 @@ class CommandlineFlagParser {
     } catch (IOException e) {
       LOGGER.warning(String.format("Failed to read file specified by @-prefixed arg: %s", file));
       return result;
+    }
+  }
 
+  final class ParsedResults {
+    final Map<String, String> formalArgs;
+    final List<String> remainingArgs;
+
+    private ParsedResults(Map<String, String> formalArgs, List<String> remainingArgs) {
+      this.formalArgs = formalArgs;
+      this.remainingArgs = remainingArgs;
     }
   }
 }
