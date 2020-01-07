@@ -2,9 +2,8 @@ workspace(name = "engage")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULES_JVM_EXTERNAL_TAG = "2.0.1"
-
-RULES_JVM_EXTERNAL_SHA = "55e8d3951647ae3dffde22b4f7f8dee11b3f70f3f89424713debd7076197eaca"
+RULES_JVM_EXTERNAL_TAG = "3.0"
+RULES_JVM_EXTERNAL_SHA = "62133c125bf4109dfd9d2af64830208356ce4ef8b165a6ef15bbff7460b35c3a"
 
 http_archive(
     name = "rules_jvm_external",
@@ -28,8 +27,8 @@ maven_install(
     # Fetch srcjars. Defaults to False.
     fetch_sources = True,
     repositories = [
-        "https://jcenter.bintray.com/",
         "https://maven.google.com",
+        "https://jcenter.bintray.com/",
         "https://repo1.maven.org/maven2",
     ],
 )
